@@ -1,8 +1,10 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from core.models import Base,db_helper
+from core.models import Base, db_helper
 from api_v1.books.views import router as books_router
+from api_v1.authors.views import router as authors_router
 import uvicorn
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -10,8 +12,11 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
     yield
 
+
 app = FastAPI(lifespan=lifespan)
 app.include_router(books_router, tags=["Books"])
+app.include_router(authors_router, tags=["Authors"])
+
 
 @app.get("/")
 def hello_index():

@@ -23,6 +23,7 @@ async def get_books(session: AsyncSession) -> list[Book]:
 async def get_book(session: AsyncSession, book_id: int) -> Book | None:
     return await session.get(Book, book_id)
 
+
 async def create_book(session: AsyncSession, book_id: BookCreate) -> Book:
     book = Book(**book_id.model_dump())
     session.add(book)
@@ -30,20 +31,22 @@ async def create_book(session: AsyncSession, book_id: BookCreate) -> Book:
     # await session.refresh(product)
     return book
 
+
 async def update_book(
-    session: AsyncSession,
-    book: Book,
-    book_update: BookUpdate | BookUpdatePartial,
-    partial: bool = False,
+        session: AsyncSession,
+        book: Book,
+        book_update: BookUpdate | BookUpdatePartial,
+        partial: bool = False,
 ) -> Book:
     for name, value in book_update.model_dump(exclude_unset=partial).items():
         setattr(book, name, value)
     await session.commit()
     return book
 
+
 async def delete_book(
-    session: AsyncSession,
-    book: Book,
+        session: AsyncSession,
+        book: Book,
 ) -> None:
     await session.delete(book)
     await session.commit()
