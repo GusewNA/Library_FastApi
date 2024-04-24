@@ -27,18 +27,19 @@ async def create_book(
 ):
     return await crud.create_book(session=session, book_id=book_id)
 
+
 @router.get("/{book_id}/", response_model=Book)
 async def get_book(
-    book: Book = Depends(book_by_id),
+        book: Book = Depends(book_by_id),
 ):
     return book
 
 
 @router.put("/{book_id}/")
 async def update_book(
-    book_update: BookUpdate,
-    book: Book = Depends(book_by_id),
-    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+        book_update: BookUpdate,
+        book: Book = Depends(book_by_id),
+        session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
     return await crud.update_book(
         session=session,
@@ -49,9 +50,9 @@ async def update_book(
 
 @router.patch("/{book_id}/")
 async def update_book_partial(
-    book_update: BookUpdatePartial,
-    book: Book = Depends(book_by_id),
-    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+        book_update: BookUpdatePartial,
+        book: Book = Depends(book_by_id),
+        session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
     return await crud.update_book(
         session=session,
@@ -63,7 +64,7 @@ async def update_book_partial(
 
 @router.delete("/{book_id}/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(
-    book: Book = Depends(book_by_id),
-    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+        book: Book = Depends(book_by_id),
+        session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
     await crud.delete_book(session=session, book=book)
